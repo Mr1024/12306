@@ -1,0 +1,631 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>订票助手</title>
+	<link href="../libs/bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<link href="../libs/bootstrap/css/bootstrap.adapter.css" rel="stylesheet" />
+	<link href="../libs/jqueryui/jquery-ui.css" rel="stylesheet" />
+	<link href="../libs/taginput/jquery.tagsinput.css" rel="stylesheet" />
+	<link href="theme/main.css" rel="stylesheet" />
+</head>
+<body class="">
+	<div id="mainWrapper" class="nologo">
+		<div class="logo" style="position:absolute;">
+			<a href="../pages/about.html" target="_blank">
+				<h2>
+					<span>猎豹</span>抢票党
+				</h2>
+				<p>订票助手 by 木鱼</p>
+			</a>
+		</div>
+		<div class="containerWraper">
+			<div class="pageContainer slideOut" id="queryPage">
+				<div class="container">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="col-xs-1 control-label">
+								预定席别
+							</label>
+							<div class="col-xs-9" id="seatTypeList">
+								<label class="checkbox-inline" data-html="true" data-toggle="tooltip" title="商务座，最土豪的席别" data-placement="bottom" data-container="body">
+									<input type="checkbox" value="9" name="seat" id="" />
+									商务
+								</label>
+								<label class="checkbox-inline" data-toggle="tooltip" title="特等座，土豪最爱" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="P" id="" />
+									特等
+								</label>
+								<label class="checkbox-inline" data-html="true" data-toggle="tooltip" title="一等座，高贵气质&lt;br /&gt;仅高铁、动车有此类型席别" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="M" id="" />
+									一等
+								</label>
+								<label class="checkbox-inline recommand" data-toggle="tooltip" title="二等座，动车世界的普通座~" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="O" id="" />
+									二等
+								</label>
+								<label class="checkbox-inline" data-toggle="tooltip" title="高级软卧，软卧世界中的高富帅" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="6" id="" />
+									高软
+								</label>
+								<label class="checkbox-inline" data-toggle="tooltip" title="很抱歉作者没坐过软卧，不知道舒不舒服。" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="4" id="" />
+									软卧
+								</label>
+								<label class="checkbox-inline recommand" data-toggle="tooltip" title="普及型卧铺" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="3" id="" />
+									硬卧
+								</label>
+								<label class="checkbox-inline" data-toggle="tooltip" title="比硬座好点儿，但相信我，时间久了也不舒服。" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="2" id="" />
+									软座
+								</label>
+								<label class="checkbox-inline recommand" data-toggle="tooltip" data-html="true" title="傲娇地坐着。&lt;br /&gt;非动车或高铁有。" data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="1" id="" />
+									硬座
+								</label>
+								<label class="checkbox-inline" data-toggle="tooltip" title="给我站着...." data-placement="bottom" data-container="body">
+									<input type="checkbox" name="seat" value="0" id="" />
+									无座
+								</label>
+							</div>
+							<div class="col-xs-2">
+								<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" style="width:100px;">
+									<i class="glyphicon glyphicon-th-list"></i>
+									快速选择
+									<i class="caret"></i>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#" class="seatCheckLink" data-target="O31">二等座/硬卧/硬座</a>
+										<a href="#" class="seatCheckLink" data-target="34">硬卧/软卧</a>
+									</li>
+									<li></li>
+								</ul>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-1 control-label" data-toggle="tooltip" data-html="true" data-placement="bottom" data-container="body" title="设置要预定的车次。如果要隐藏其它车次，请设置自动预定选项（“更多”菜单中）">
+								预定车次
+							</label>
+							<div class="col-xs-9">
+								<div><input type="text" id="trains" value="" /></div>
+							</div>
+							<div class="col-xs-2">
+								<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" style="width: 100px;">
+									<i class="glyphicon glyphicon-th-list"></i>
+									快速添加
+									<i class="caret"></i>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#" class="cmd-addtrain" data-code="动车或高铁或城铁">动车/高铁/城铁</a></li>
+									<li><a href="#" class="cmd-addtrain" data-code="特快或直达">特快/直达</a></li>
+									<li data-toggle="modal" data-target="#addTrain">
+										<a href="#" style="font-weight:bold;">
+											添加更多车次...
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-1 control-label" data-toggle="tooltip" data-html="true" data-placement="top" data-container="body" title="当无票时，将会自动轮流切换这里的日期，直到有票。">
+								日期轮查
+							</label>
+							<div class="col-xs-4">
+								<button type="button" id="dateLoopBtn" style="float:right;" class="btn btn-default btn-sm" data-toggle="modal" data-target="#dateLoop">
+									<i class="glyphicon glyphicon-calendar"></i>
+									选择
+								</button>
+								<div id="dateLoopContainer" style="margin-right:50px;"></div>
+							</div>
+							<label class="col-xs-1 control-label">
+								选择乘客
+							</label>
+							<div class="col-xs-4" id="passengers"></div>
+							<div class="col-xs-2 btn-group">
+								<button type="button" id="btnAddPassengerM" class="btn btn-default btn-sm" data-toggle="modal" data-target="#addPassenger" style="width:100px;">
+									<i class="glyphicon glyphicon-plus"></i>
+									加乘车人
+								</button>
+								<!--<button class="btn btn-default dropdown-toggle btn-sm" id="btnAddPassengerD" data-toggle="dropdown" style="width:26px;"><span class="caret"></span></button>-->
+								<ul class="dropdown-menu" role="menu">
+									<li data-toggle="modal" data-target="#enterPassenger">
+										<a href="javascript:;" style="font-weight:bold;">
+											添加新乘客...
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-3">
+								<div class="btn-group dropup">
+									<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#travelHistory">
+										<i class="glyphicon glyphicon-transfer"></i>
+										出行计划
+									</button>
+									<button class="btn btn-default btn-sm" id="btnResetProfile" type="button">
+										<i class="glyphicon glyphicon-refresh"></i>
+										重置
+									</button>
+									<button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+										更多
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li data-toggle="modal" data-target="#filterOption">
+											<a href="javascript:;">
+												<i class="glyphicon glyphicon-filter"></i>
+												过滤选项
+											</a>
+										</li>
+										<li data-toggle="modal" data-target="#autoSelectOption">
+											<a href="javascript:;">
+												<i class="glyphicon glyphicon-wrench"></i>
+												自动预定选项
+											</a>
+										</li>
+										<!--
+										<li class="divider"></li>
+										<li>
+											<a href="options.html">
+												<i class="glyphicon glyphicon-cog"></i>
+												更多选项
+											</a>
+										</li>
+										-->
+									</ul>
+								</div>
+							</div>
+							<div class="col-xs-5" id="queryStat" style="visibility: hidden;padding-top:2px; padding-left:0; padding-right:0;">
+								<span class="label label-success label-normal"></span> <span class="label label-normal label-primary"></span> <span class="label label-normal label-danger" id="spnViewResult" data-toggle="modal" data-target="#queryResult" title="显示的是已被过滤的车次，点击查看明细"></span>
+								<span class="label label-normal label-info" id="stopTimer"></span>
+								<a class="btnMute label label-info" href="#" style="display:none;">
+									<i class="glyphicon glyphicon-music"></i>
+									静音
+								</a>
+							</div>
+							<div class="col-xs-2 text-right"><label class="control-label checkbox-inline"><input type="checkbox" name="optAutoSubmit" data-profile-key="autoSubmitEnabled" />自动提交</label><label class="checkbox-inline"><input type="checkbox" name="optStudent" data-profile-key="studentTicket" />学生</label></div>
+							<div class="col-xs-2">
+								<button type="button" class="btn btn-primary" style="width:112px;" id="btnRefresh"><i class="glyphicon glyphicon-repeat"></i> <span>开始刷票</span></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="pageContainer current" id="loginPage" data-hidelogo="1">
+				<div class="intro">
+					<div class="logo">
+						<a href="../pages/about.html" target="_blank">
+							<h2>
+								<span>猎豹</span>抢票党
+							</h2>
+							<p>订票助手 by 木鱼</p>
+						</a>
+					</div>
+					<div class="intro-sidebar">
+						<p>
+							<a href="http://www.12306.cn/mormhweb/zxdt/201305/t20130516_600.html" target="_blank" class="btn btn-sm btn-default">查询起售时间</a>
+							<a href="http://www.12306.cn/mormhweb/zxdt/index_zxdt.html" target="_blank" class="btn btn-sm btn-default">铁路公告</a>
+							<!--<a href="" target="_blank" class="btn btn-sm btn-default">查询特价机票</a>-->
+							<!--<a href="" class="btn btn-sm btn-default">查询长途汽车</a>-->
+						</p>
+						<p>
+							<strong>最新通知：</strong>
+							<span id="systemNotification">暂无通知</span>
+						</p>
+						<p>
+							<label for="chkEnableSmartDns" class="checkbox-inline">
+								<input type="checkbox" value="" id="chkEnableSmartDns" />
+								智能选择服务器
+							</label>
+							<!--label for="chkEnableAutoCaptcha" class="checkbox-inline" style="display:none;">
+								<input type="checkbox" value="" id="chkEnableAutoCaptcha" />
+								自动识别验证码
+							</label-->
+						</p>
+						<p>
+							当前网络情况：
+							<span class="label label-normal" id="curServerSpeed"></span>
+						</p>
+					</div>
+					<div class="intro-main">
+						<h1>今日可预定 <span id="presellTip"></span> 的车票</h1>
+						<p class="special notLoginTip" style="display:none;color:red;">订票助手需要您登录12306才可使用。为了您更可靠的订票，建议您立刻登录。</p>
+						<p class="special preSellTip">网上和电话订票提前20天，代售点和车站提前18天，以公告为准 [<a href="http://www.fishlee.net/soft/44/faq1.html" style="color:blue;" target="_blank">订票必读</a>]</p>
+						<div class="special unvalid" style="color:red;">
+							 <a id="lnkGoAdv" href="#" style="color:red;font-weight:bold;text-decoration:underline;font-size: 140%;">猎豹抢票党(订票助手)已推出新版，点此立刻体验</a> ~
+						</div>
+						<div id="loginFunc" class="special loginPageOnly" style="display:none;">
+							<strong>选择账号</strong>
+							<select id="userSelect"></select>
+							<a href="#" id="deleteUser">
+								<i class="glyphicon glyphicon-remove"></i>
+								删除
+							</a>
+							<label>
+								<input type="checkbox" value="1" data-sysconfigkey="rememberLoginPwd" />
+								记住密码
+							</label>
+							<label style="margin-left:5px;">
+								<input type="checkbox" value="1" data-sysconfigkey="autoLoginAfterVerifyCode" />
+								输验证码后自动登录
+							</label>
+
+						</div>
+						<p class="special submitPageOnly rtp" style="display:none;">
+							<strong>实时余票：</strong>
+						</p>
+						<div id="submitFunc" class="special submitPageOnly" style="display:none;">
+							<span class="label label-normal label-warning" id="countDown">
+								请等待 <em>5</em> 秒再提交订单
+							</span>
+							<label class="checkbox-inline">
+								<input type="checkbox" value="1" data-sysconfigkey="autoSubmitAfterVerifyCode" />
+								输验证码后自动提交
+							</label>
+							<a class="btnMute" href="#" style="display:none;">
+								<i class="glyphicon glyphicon-music"></i>
+								静音
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="bus">
+				没有抢到票？<span></span>！<a href="#" target="_blank">立刻查看</a> <a href="#">&times; 关闭</a>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade modal-mini modal-wide" role="dialog" id="queryResult">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>查询结果</h4>
+				</div>
+				<div class="modal-body">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade modal-mini modal-wide" role="dialog" id="dateLoop">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>日期轮询</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-horizontal">
+						<div class="col-xs-10" id="dateLoopBox"></div>
+						<div class="col-xs-2 text-right">
+							<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">
+								<i class="glyphicon glyphicon-ok"></i>
+								确 定
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="filterOption" role="dialog" class="modal fade modal-mini modal-wide">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>过滤选项</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-2">
+							<label>时间限制</label>
+						</div>
+						<div class="col-xs-10 form-inline" id="timerangeContainer">
+							出发时间自
+							<select class="form-control select-sm" data-profile-key="timeRangeDepFrom"></select>
+							到
+							<select class="form-control select-sm" data-profile-key="timeRangeDepTo" data-isend="1"></select>
+							到达时间自
+							<select class="form-control select-sm" data-profile-key="timeRangeArrFrom"></select>
+							到
+							<select class="form-control select-sm" data-profile-key="timeRangeArrTo" data-isend="1"></select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<label>筛选选项</label>
+						</div>
+						<div class="col-xs-10">
+							<label class="checkbox-inline">
+								<input type="checkbox" value="" id="flt_samedep" data-profile-key="hideNotSameFrom" />
+								要求出发站完全相同
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" value="" id="flt_sameto" data-profile-key="hideNotSameTo" />
+								要求到达站完全相同
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" value="" id="flt_hidenoticket" data-profile-key="hideNoTicket" />
+								不显示无票车次
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" value="" id="flt_autowait" data-profile-key="autoWaitToSell" />
+								尚未起售时自动等待
+							</label>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="travelHistory" role="dialog" class="modal fade modal-mini modal-wide">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>出行计划</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-10">
+							<div id="historyList"></div>
+						</div>
+						<div class="col-xs-2">
+							<button class="btn btn-primary btn-sm btn-block" id="cmdSaveTravelMethod"><i class="glyphicon glyphicon-ok"></i> 保存当前</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="addPassenger" role="dialog" class="modal fade modal-mini modal-wide">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>加乘车人</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-9">
+							<div id="contactList"></div>
+						</div>
+						<div class="col-sm-3">
+							<div class="input-group">
+								<span class="input-group-addon">搜索</span>
+								<input type="text" value="" class="form-control input-sm" placeholder="输入关键字..." id="addp_search_key" />
+								<span class="input-group-btn">
+									<button class="btn btn-danger btn-sm" disabled="disabled" id="addp_search_clear">
+										<i class="glyphicon glyphicon-remove"></i>
+									</button>
+								</span>
+							</div>
+							<br />
+							<div>
+								<button type="button" data-loading-text="正在加载中..." class="btn btn-sm btn-default" id="addp_refresh">
+									<i class="glyphicon glyphicon-refresh"></i>
+									刷新
+								</button>
+								<button type="button" class="btn btn-sm btn-info" data-dismiss="modal">
+									<i class="glyphicon glyphicon-ok"></i>
+									确定
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="enterPassenger" role="dialog" class="modal fade modal-mini modal-wide">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>输入联系人</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-2">
+							<select class="form-control  input-sm" id="addmp_tickettype">
+								<option value="1">成人票</option>
+								<option value="2">儿童票</option>
+								<option value="4">残军票</option>
+							</select>
+						</div>
+						<div class="col-sm-8">
+							<div class="input-group input-group-sm">
+								<span class="input-group-addon">乘客姓名</span>
+								<input type="text" placeholder="乘客姓名" value="" class="form-control" id="addmp_name" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<select class="form-control  input-sm" id="addmp_idtype">
+								<option value="1">二代身份证</option>
+								<option value="2">一代身份证</option>
+								<option value="C">港澳通行证</option>
+								<option value="G">台湾通行证</option>
+								<option value="B">护照</option>
+							</select>
+						</div>
+						<div class="col-sm-8">
+							<div class="input-group input-group-sm">
+								<span class="input-group-addon">证件号码</span>
+								<input type="text" placeholder="证件号码" value="" id="addmp_id" class="form-control" />
+							</div>
+						</div>
+						<div class="col-xs-2">
+							<button class="btn btn-primary btn-sm pull-right btn-block" id="addmp_ok">
+								<i class="glyphicon glyphicon-ok-sign"></i>
+								确定
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="addTrain" role="dialog" class="modal fade modal-mini modal-wide">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>添加车次</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-2">
+							<label>快速选择</label>
+						</div>
+						<div class="col-xs-10">
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="高铁">所有高铁(G)</button>
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="城铁">所有城铁(C)</button>
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="动车">所有动车(D)</button>
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="快车">所有快车(K)</button>
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="直达">所有直达(Z)</button>
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="特快">所有特快(T)</button>
+							<button class="btn btn-default btn-sm cmd-addtrain" data-dismiss="modal" data-container="body" data-toggle="tooltip" data-code="任意车次">任意车次</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<label>手动输入</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm text-upper" value="" id="addtrain_code" placeholder="多个车次用逗号或空格隔开；可以使用正则表达式(前后不要加^或$)；" />
+						</div>
+						<div class="col-xs-2">
+							<button class="btn btn-sm btn-primary btn-block" id="addtrain_ok">
+								<i class="glyphicon glyphicon-ok-sign"></i>
+								确定
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="autoSelectOption" role="dialog" class="modal fade modal-mini modal-wide">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>自动预定选项</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-2">
+							<label>模式</label>
+						</div>
+						<div class="col-xs-10">
+							<label class="radio-inline">
+								<input type="radio" name="autoSubmitSelectMethod" id="sm_0" value="1" data-profile-key="selectSeatFirst" /> 优先满足席别
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="autoSubmitSelectMethod" id="sm_1" value="0" data-profile-key="selectSeatFirst" /> 优先考虑车次
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<label>选项</label>
+						</div>
+						<div class="col-xs-10">
+							<label class="checkbox-inline">
+								<input type="checkbox" value="" id="opt_partial" data-profile-key="partialSubmitEnabled" />
+								当票数不够时，允许优先按乘客顺序先行订票
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" value="" id="opt_hidenotinlist" data-profile-key="hideNotInListTrain" />
+								不显示我预定列表以外的车次
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="compatibleIntro alert alert-danger">
+		<a class="btn btn-info btn-sm" href="#" target="_blank"></a>
+	</div>
+	<div class="alert alert-success" id="updateAvailable">
+		<a class="btn btn-primary btn-sm" href="http://www.fishlee.net/soft/44/download.html" target="_blank">请升级<br />最新版</a>
+	</div>
+	<div class="alert alert-info" id="speedinfo">
+		当前服务器 <span></span>(加速<span></span>%)
+	</div>
+	<div class="modal modal-mini fade" role="dialog" id="compatibleDlg">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>兼容模式运行中</h4>
+				</div>
+				<div class="modal-body">
+					<p>
+						兼容模式运行的助手可能会丢失部分功能，或存在部分不兼容情况，建议在
+						<a href="http://ww.liebao.cn/">猎豹浏览器</a> 上使用助手以获得完整功能。
+						<strong>因为种种原因，作者无法保证兼容模式下的助手功能完全正常以及后续的更新，给您带来的不便，作者非常抱歉，请您原谅</strong>。
+						<br />
+						更多信息，请点击访问公告：<a href="http://bbs.fishlee.net/" target="_blank">
+							关于停止公开发布
+							<span style="text-decoration: underline;">
+								订票助手猎豹专版
+							</span>
+							以外版本的公告
+						</a>
+						。
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal modal-mini fade modal-wide" role="dialog" id="seatSelectModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>设置席别</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-xs-1">已选</label>
+							<div class="col-xs-9"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-xs-1">未选</label>
+							<div class="col-xs-9"></div>
+							<div class="col-xs-2">
+								<button type="button" class="btn btn-sm btn-primary btn-block">
+									<i class="glyphicon glyphicon-ok"></i>
+									确定
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../libs/jquery.js"></script>
+	<script src="../libs/underscore/underscore.js"></script>
+	<script src="../libs/jqueryui/jquery-ui.js"></script>
+	<script src="../libs/jqueryui/jquery.ui.datepicker-zh-CN.js"></script>
+	<script src="../libs/bootstrap/js/bootstrap.js"></script>
+	<script src="../libs/bootstrap/js/bootstrap.adapter.js"></script>
+	<script src="../libs/taginput/jquery.tagsinput.js"></script>
+	<script src="scripts/global.js"></script>
+	<script src="scripts/entity.js"></script>
+	<script src="scripts/core.js"></script>
+	<script src="scripts/main.js"></script>
+</body>
+</html>

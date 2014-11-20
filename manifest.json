@@ -1,0 +1,82 @@
+{
+	"content_security_policy": "script-src 'self' https://hm.baidu.com; object-src 'self';",
+	"content_scripts": [
+		{
+			"all_frames": true,
+			"exclude_globs": [ ],
+			"exclude_matches": [ ],
+			"include_globs": [ ],
+			"js": [ "libs/jquery.js", "libs/underscore/underscore.js", "contentscripts/framework.js", "contentscripts/morweb/12306.js" ],
+			"matches": [ "http://dynamic.12306.cn/otsweb/*", "https://dynamic.12306.cn/otsweb/*" ],
+			"run_at": "document_end"
+		},
+		{
+			"all_frames": true,
+			"exclude_globs": [ ],
+			"exclude_matches": [ ],
+			"include_globs": [ ],
+			"js": [ "libs/jquery.js", "libs/underscore/underscore.js", "contentscripts/kyfw/12306_pre.js" ],
+			"matches": [ "http://*.12306.cn/otn/*", "https://*.12306.cn/otn/*" ],
+			"run_at": "document_start"
+		},
+		{
+			"all_frames": true,
+			"exclude_globs": [ ],
+			"exclude_matches": [ ],
+			"include_globs": [ ],
+			"js": [ "libs/jquery.js", "libs/underscore/underscore.js", "contentscripts/framework.js", "contentscripts/kyfw/12306.js" ],
+			"css": [ "contentscripts/kyfw/12306.css" ],
+			"matches": [ "http://*.12306.cn/otn/*", "https://*.12306.cn/otn/*" ],
+			"run_at": "document_end"
+		},
+		{
+			"all_frames": true,
+			"exclude_globs": [ ],
+			"exclude_matches": [ ],
+			"include_globs": [ ],
+			"js": [ "libs/jquery.js", "12306/mobileproxy.js" ],
+			"matches": [ "http://test.fishlee.net/*", "http://dev.fishlee.net/*", "http://app.fishlee.net/*", "http://12306.liebao.cn/*" ],
+			"run_at": "document_end"
+		},
+		{
+			"all_frames": false,
+			"exclude_globs": [ ],
+			"exclude_matches": [ ],
+			"include_globs": [ ],
+			"css": [ "contentscripts/morweb/12306_style.css" ],
+			"matches": [ "http://www.12306.cn/mormhweb/kyfw/*" ],
+			"run_at": "document_end"
+		}
+	],
+	"browser_action": {
+		"default_icon": "icons/icon_32.png",
+		"default_popup": "air/popup.html",
+		"default_title": "猎豹抢票党/12306订票助手 V7"
+	},
+	"description": "12306订票助手 v7: 帮您订票的小助手 by 木鱼，全力为您的车票购买献计献策！",
+	"key": "7k6gnXVACvUPU2DfslJgSrWJTHqIg5uwd+Kgl/5zSg==",
+	"name": "猎豹抢票党/12306订票助手 V7",
+	"version": "7.2.0",
+	"manifest_version": 2,
+	"icons": {
+		"16": "icons/icon_16.png",
+		"32": "icons/icon_32.png",
+		"48": "icons/icon_48.png",
+		"128": "icons/icon_128.png"
+	},
+	"homepage_url": "http://www.fishlee.net/",
+	"permissions": [ "management", "tabs", "http://*.12306.cn/*", "https://*.12306.cn/*", "http://*.fishlee.net/*", "http://*.liebao.cn/*", "notifications", "webRequest", "webRequestBlocking", "http://*.fishlee.net/*", "http://*.ijinshan.com/*", "*://*/*", "experimental" ],
+	"update_url": "http://www.fishlee.net/service/update2/44/44/update_lb.xml",
+	"background": {
+		"page": "background.html"
+	},
+	"minimum_chrome_version": "28",
+	"externally_connectable": {
+		"ids": [ ],
+		"matches": [
+			"*://*.fishlee.net/*",
+			"*://*.liebao.cn/*"
+		],
+		"accepts_tls_channel_id": false
+	}
+}
