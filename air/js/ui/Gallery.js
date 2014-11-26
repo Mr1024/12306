@@ -75,5 +75,5 @@ Gallery.prototype.showMask = function() {
     return this.mask.show(), this
 };
 Gallery.prototype.hideMask = function() {
-    return this.mask.hide(), this
+    return this.mask.hideMask(), this
 }
