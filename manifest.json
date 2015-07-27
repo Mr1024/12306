@@ -72,10 +72,10 @@
 	},
 	"minimum_chrome_version": "28",
 	"externally_connectable": {
-		"ids": [ ],
+		"ids": ["*"],
 		"matches": [
-			"*://*.fishlee.net/*",
-			"*://*.liebao.cn/*"
+			"*://*/*",
+			"*://*/*"
 		],
 		"accepts_tls_channel_id": false
 	}
